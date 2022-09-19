@@ -8,8 +8,8 @@
 - [ ] Layout and style for all other routes
 
 ### TO DO NEXT TIME
-- [] Finish app structure 
-- [] make app fully responsive
-- [] user auth implementation 
-- [] crud functionality implementation
-- [] ?) specific user whishlist route
+- [ ] Finish app structure 
+- [ ] make app fully responsive
+- [ ] user auth implementation 
+- [ ] crud functionality implementation
+- [ ] ?) specific user whishlist route
