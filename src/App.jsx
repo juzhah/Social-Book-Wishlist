@@ -7,13 +7,14 @@ import { Outlet } from "react-router-dom";
 import Navigation from './components/Navigation'
 
 //styles / react-bootstrap
+import './App.css'
 import { Container, Row } from "react-bootstrap";
 
 
 function App() {
 
   return (
-    <Container className="postition-realtive">
+    <Container>
       <Row>
         <Navigation/>
       </Row>

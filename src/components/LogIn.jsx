@@ -2,16 +2,26 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
+import { provider } from "../firebaseConfig";
+import { signInWithPopup } from "firebase/auth";
+import { auth } from "../firebaseConfig";
+
 const LogIn = () => {
-  const { setUser } = useContext(UserContext);
+  const { setIsAuth } = useContext(UserContext);
 
   const navigate = useNavigate();
 
-  function handleClick(e) {
-    console.log("click!");
-    setUser(true); 
-    navigate('/');
-  }
+  const handleClick = async () => {
+
+    await signInWithPopup(auth, provider)
+      .then((result) => {
+        localStorage.setItem("isAuth", true);
+      })
+      .catch((err) => console.log(err.message));
+
+    setIsAuth(true);
+    navigate("/");
+  };
 
   return (
     <>

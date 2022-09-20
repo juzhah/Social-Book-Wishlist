@@ -5,11 +5,21 @@ import { Container, Navbar, Button, Nav } from "react-bootstrap";
 
 import { UserContext } from "../context/UserContext";
 
+import { useNavigate } from "react-router-dom";
+
+import { signOut } from "firebase/auth";
+import { auth } from "../firebaseConfig";
+
 const Navigation = () => {
-  const { user, setUser } = useContext(UserContext);
+  const { isAuth, setIsAuth } = useContext(UserContext);
+  const navigate = useNavigate();
 
   function logUserOut() {
-    setUser(false);
+    signOut(auth).then(() => {
+      localStorage.clear();
+      setIsAuth(false);
+      navigate("/");
+    });
   }
 
   return (
@@ -27,25 +37,33 @@ const Navigation = () => {
             Book Whishlist
           </Link>
         </Navbar.Brand>
+
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
-          {!user ? (
+          {!isAuth ? (
             <Nav>
               <Nav.Link>
                 <Link to={"/login"}>Log In</Link>
               </Nav.Link>
             </Nav>
           ) : (
-            <Nav>
-              <Nav.Link>
-                <Link to={"/createpost"}>create a post</Link>
-              </Nav.Link>
-              <Nav.Link eventKey={2}>
-                <div variant="outline-dark" onClick={logUserOut}>
-                  Log Out
-                </div>
-              </Nav.Link>
-            </Nav>
+            <>
+              {/* <Navbar.Text>
+                Welcome! {auth.currentUser.displayName}
+                <img src={auth.currentUser.photoURL}></img>
+              </Navbar.Text> */}
+
+              <Nav>
+                <Nav.Link>
+                  <Link to={"/createpost"}>create a post</Link>
+                </Nav.Link>
+                <Nav.Link eventKey={2}>
+                  <div variant="outline-dark" onClick={logUserOut}>
+                    Log Out
+                  </div>
+                </Nav.Link>
+              </Nav>
+            </>
           )}
         </Navbar.Collapse>
       </Container>

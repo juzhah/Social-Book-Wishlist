@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link, Navigate } from "react-router-dom";
 
 //Firestore and Auth
+import { auth } from "../firebaseConfig";
+import BookDataService from "../services/book.service"
 
 import {
   Container,
@@ -15,7 +17,7 @@ import {
 import { UserContext } from "../context/UserContext";
 
 const CreatePost = () => {
-  const { user } = useContext(UserContext);
+  const { isAuth } = useContext(UserContext);
 
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -23,7 +25,32 @@ const CreatePost = () => {
 
   const [message, setMessage] = useState({ error: false, msg: "" });
 
-  function hanldeSubmit() {}
+  async function hanldeSubmit(e) {
+    e.preventDefault();
+
+    setMessage("");
+
+    const newBook = {
+      title,
+      author,
+      link,
+      auth: {name: auth.currentUser.displayName, id: auth.currentUser.uid}
+    }
+
+    if (title === "" || author === "" || link === "") {
+      setMessage({ error: true, msg: "All fields are mandatory!" });
+      return;
+    }
+
+    try{
+      await BookDataService.addBooks(newBook)
+      setMessage({error: false, msg: "Book added succesfully!"})
+    }catch(err){
+      setMessage({error: true, msg: err.message})
+    }
+
+    clearForm();
+  }
 
   function clearForm() {
     setTitle("");
@@ -31,7 +58,7 @@ const CreatePost = () => {
     setLink("");
   }
 
-  if(!user){
+  if(!isAuth){
     return <Navigate to="/" />
   }
 
