@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 import { Container, Navbar, Button, Nav } from "react-bootstrap";
 
@@ -47,12 +47,6 @@ const Navigation = () => {
               </Nav.Link>
             </Nav>
           ) : (
-            <>
-              {/* <Navbar.Text>
-                Welcome! {auth.currentUser.displayName}
-                <img src={auth.currentUser.photoURL}></img>
-              </Navbar.Text> */}
-
               <Nav>
                 <Nav.Link>
                   <Link to={"/createpost"}>create a post</Link>
@@ -63,7 +57,6 @@ const Navigation = () => {
                   </div>
                 </Nav.Link>
               </Nav>
-            </>
           )}
         </Navbar.Collapse>
       </Container>

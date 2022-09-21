@@ -9,10 +9,12 @@ import Navigation from './components/Navigation'
 //styles / react-bootstrap
 import './App.css'
 import { Container, Row } from "react-bootstrap";
+import { useState } from "react";
+
+import { auth } from "./firebaseConfig";
 
 
 function App() {
-
   return (
     <Container>
       <Row>

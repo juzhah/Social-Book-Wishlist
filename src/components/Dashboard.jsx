@@ -10,6 +10,8 @@ import BookDataService from "../services/book.service"
 
 import { auth } from "../firebaseConfig";
 
+
+
 const Dashboard = () => {
   const [bookList, setBookList]= useState([]);
   const [bookId, setBookId] =useState('');
@@ -28,8 +30,7 @@ const Dashboard = () => {
   }
 
   const editBookHandler = (id) => {
-    setBookId(id);
-    navigate('editpost')
+    navigate(`updatepost/${id}`)
   }
 
   const deleteBookHandler = async (id) => {

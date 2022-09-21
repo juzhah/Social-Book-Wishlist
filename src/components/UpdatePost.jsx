@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 //Firestore and Auth
 import { auth } from "../firebaseConfig";
 import BookDataService from "../services/book.service"
+
+import { useParams } from "react-router-dom";
 
 import {
   Container,
@@ -16,7 +18,11 @@ import {
 } from "react-bootstrap";
 import { UserContext } from "../context/UserContext";
 
-const CreatePost = () => {
+const UpdatePost = () => {
+
+
+  const {postId} = useParams();
+  console.log(postId);
   
   const { isAuth } = useContext(UserContext);
 
@@ -24,7 +30,6 @@ const CreatePost = () => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [link, setLink] = useState("");
-
   const [message, setMessage] = useState({ error: false, msg: "" });
 
   async function hanldeSubmit(e) {
@@ -45,23 +50,41 @@ const CreatePost = () => {
     }
 
     try{
-      await BookDataService.addBooks(newBook)
-      setMessage({error: false, msg: "Book added succesfully!"})
+      if (postId !== undefined && postId !== "") {
+        await BookDataService.updateBook(postId, newBook);
+        setMessage({ error: false, msg: "Book successfully updated!" });
+      }
     }catch(err){
       setMessage({error: true, msg: err.message})
     }
-
     clearForm();
   }
+
+  const editHandler = async () => {
+    setMessage("")
+
+    try {
+      const docSnap = await BookDataService.getBook(postId);
+      setTitle(docSnap.data().title)
+      setAuthor(docSnap.data().author)
+      setLink(docSnap.data().link)
+
+    } catch(err){
+      setMessage({error: true, msg: err.message})
+    }
+  }
+
+  useEffect(() => {
+    if(postId !== undefined && postId !== ""){
+      editHandler();
+    }
+  }, [postId])
+  
 
   function clearForm() {
     setTitle("");
     setAuthor("");
     setLink("");
-  }
-
-  if(!isAuth){
-    return <Navigate to="/login" />
   }
 
   return (
@@ -77,7 +100,7 @@ const CreatePost = () => {
         </Alert>
       )}
       <Row>
-        <h2>Create Post</h2>
+        <h2>Update Post</h2>
       </Row>
       <Row>
         <Form onSubmit={hanldeSubmit}>
@@ -119,7 +142,7 @@ const CreatePost = () => {
 
           <div className="d-grid gap-2">
             <Button variant="primary" type="Submit">
-              Add Book
+              Update Book
             </Button>
             <Button variant="outline-secondary" onClick={clearForm}>
               Clear Form
@@ -131,4 +154,4 @@ const CreatePost = () => {
   );
 };
 
-export default CreatePost;
+export default UpdatePost;

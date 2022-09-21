@@ -26,7 +26,7 @@ const LogIn = () => {
   return (
     <>
       <div>Log In</div>
-      <button onClick={handleClick}> Log In </button>
+      <button onClick={handleClick}> Log In With Google  </button>
     </>
   );
 };

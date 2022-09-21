@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
 
 import App from "./App";
 import CreatePost from "./components/CreatePost";
+import UpdatePost from "./components/UpdatePost";
 import Dashboard from "./components/Dashboard";
 import ErrorPage from "./components/ErrorPage";
 import LogIn from "./components/LogIn";
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "/createpost",
         element: <CreatePost />,
+        errorElement: <ErrorPage />,
+      },{
+        path: "/updatepost/:postId",
+        element: <UpdatePost />,
         errorElement: <ErrorPage />,
       },
     ],
